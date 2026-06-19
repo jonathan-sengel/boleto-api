@@ -8,8 +8,10 @@
         public string NomeBeneficiario { get; set; }
         public string CpfCnpjBeneficiario { get; set; }
         public decimal Valor { get; set; }
-        public DateTime DataVencimento { get; set; }
-        public string Observacao { get; set; }
+        public DateOnly DataVencimento { get; set; }
+        public string? Observacao { get; set; }
         public Guid BancoId { get; set; }
+
+        public Banco Banco { get; set; }
     }
 }

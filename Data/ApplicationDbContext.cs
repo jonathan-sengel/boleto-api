@@ -20,7 +20,7 @@ namespace BoletoAPI.Data
             modelBuilder.Entity<Banco>(entity =>
             {
                 entity.HasKey(b => b.Id);
-                entity.Property(b => b.PercentualJuros).HasPrecision(3, 4);
+                entity.Property(b => b.PercentualJuros).HasPrecision(6, 4);
             });
 
             modelBuilder.Entity<Boleto>(entity =>
@@ -28,7 +28,7 @@ namespace BoletoAPI.Data
                 entity.HasKey(b => b.Id);
                 entity.Property(b => b.CpfCnpjPagador).HasMaxLength(18);
                 entity.Property(b => b.CpfCnpjBeneficiario).HasMaxLength(18);
-                entity.Property(b => b.Valor).HasPrecision(13, 2);
+                entity.Property(b => b.Valor).HasPrecision(18, 2);
                 entity.Property(b => b.Observacao).HasMaxLength(500);
                 entity.HasOne(b => b.Banco).WithMany().HasForeignKey(b => b.BancoId);
             });

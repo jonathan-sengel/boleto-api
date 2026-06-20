@@ -13,5 +13,11 @@
         public Guid BancoId { get; set; }
 
         public Banco Banco { get; set; }
+
+        public void ProcessarValorAPagar()
+        {
+            if (DateOnly.FromDateTime(DateTime.Now) > DataVencimento)
+                Valor *= 1 + (Banco.PercentualJuros / 100);
+        }
     }
 }

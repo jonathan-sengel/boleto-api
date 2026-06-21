@@ -1,5 +1,6 @@
 ﻿using BoletoAPI.Data;
 using BoletoAPI.DTOs;
+using BoletoAPI.Exceptions;
 using BoletoAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ namespace BoletoAPI.Services
             var boleto = await _context.Boletos
                 .Include(b => b.Banco)
                 .SingleOrDefaultAsync(b => b.Id == id)
-                ?? throw new KeyNotFoundException("Boleto não encontrado com este id;");
+                ?? throw new NotFoundException("Boleto não encontrado com este id;");
 
             boleto.ProcessarValorAPagar();
             return boleto;
@@ -28,7 +29,7 @@ namespace BoletoAPI.Services
         {
             var banco = await _context.Bancos
                 .FindAsync(dto.BancoId)
-                ?? throw new ArgumentException("Banco com id informado não encontrado.");
+                ?? throw new RegraDeNegocioException("Banco com id informado não encontrado.");
 
             var novoBoleto = new Boleto
             {

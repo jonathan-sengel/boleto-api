@@ -1,4 +1,5 @@
 using BoletoAPI.Data;
+using BoletoAPI.Middlewares;
 using BoletoAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,5 +29,6 @@ app.MapGet("/", context =>
     return Task.CompletedTask;
 });
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.Run();

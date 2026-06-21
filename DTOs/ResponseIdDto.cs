@@ -1,6 +1,6 @@
 ﻿namespace BoletoAPI.DTOs
 {
-    public class EntidadeCriadaDto
+    public class ResponseIdDto
     {
         public Guid Id { get; set; }
     }

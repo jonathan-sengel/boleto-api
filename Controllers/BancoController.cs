@@ -1,4 +1,5 @@
 ﻿using BoletoAPI.DTOs;
+using BoletoAPI.Models;
 using BoletoAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace BoletoAPI.Controllers
 {
     [ApiController]
     [Route("/api/bancos")]
+    [ProducesResponseType(typeof(ApiErroDto), StatusCodes.Status400BadRequest)]
     public class BancoController : ControllerBase
     {
         private readonly BancoService _bancoService;
@@ -15,6 +17,7 @@ namespace BoletoAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Banco>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ObterTodos()
         {
             var bancos = await _bancoService.ObterTodos();
@@ -22,6 +25,8 @@ namespace BoletoAPI.Controllers
         }
 
         [HttpGet("{codigo}")]
+        [ProducesResponseType(typeof(Banco), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiErroDto), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterBancoPorCodigo(string codigo)
         {
             var banco = await _bancoService.ObterPorCodigo(codigo);
@@ -30,10 +35,11 @@ namespace BoletoAPI.Controllers
         }
 
         [HttpPost("novo")]
+        [ProducesResponseType(typeof(ResponseIdDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> CadastrarBanco(CriarBancoDto bancoDto)
         {
             var novoBanco = await _bancoService.Criar(bancoDto);
-            return Created($"/api/bancos/{novoBanco.Id}", novoBanco);
+            return Created($"/api/bancos/{novoBanco.Id}", new ResponseIdDto { Id = novoBanco.Id });
         }
     }
 }

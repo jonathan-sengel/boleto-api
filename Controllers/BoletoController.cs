@@ -1,4 +1,5 @@
 ﻿using BoletoAPI.DTOs;
+using BoletoAPI.Models;
 using BoletoAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace BoletoAPI.Controllers
 {
     [ApiController]
     [Route("/api/boletos")]
+    [ProducesResponseType(typeof(ApiErroDto), StatusCodes.Status400BadRequest)]
     public class BoletoController : ControllerBase
     {
 
@@ -16,6 +18,8 @@ namespace BoletoAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(List<Boleto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiErroDto), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterBoletoAtualizado(Guid id)
         {
             var boletoAtualizado = await _service.ObterPorId(id);
@@ -23,6 +27,7 @@ namespace BoletoAPI.Controllers
         }
 
         [HttpPost("novo")]
+        [ProducesResponseType(typeof(List<ResponseIdDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> CadastrarBoleto(CriarBoletoDto boletoDto)
         {
             if (boletoDto.DataVencimento <= DateTime.Now)
@@ -30,7 +35,7 @@ namespace BoletoAPI.Controllers
 
             var boleto = await _service.Criar(boletoDto);
 
-            return Created($"/api/boletos/{boleto.Id}", new EntidadeCriadaDto { Id = boleto.Id });
+            return Created($"/api/boletos/{boleto.Id}", new ResponseIdDto { Id = boleto.Id });
         }
     }
 }
